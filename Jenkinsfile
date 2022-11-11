@@ -12,11 +12,21 @@ pipeline  {
         timestamps()
     }
     stages {
+        stage("Removing old dockers") {
+            steps {
+                echo 'Removing docers ...'
+                 dir('.'){
+                    sh 'docker ps -q --filter "name=bartumeys/dashboard_frontend" | grep -q . && docker stop dashboard_frontend || echo Not stop'
+                    sh 'docker ps -q --filter "name=bartumeys/dashboard_frontend" | grep -q . && docker rm dashboard_frontend -f || echo Not remove docker'
+
+                }
+            }
+        }
         stage("Removing old images") {
             steps {
                 echo 'Removing images ...'
                  dir('.'){
-                    sh "docker rmi bartumeys/compass_frontend"
+                    sh 'docker ps -q --filter "name=bartumeys/dashboard_frontend" | grep -q . && docker rmi bartumeys/dashboard_frontend || echo Not Found'
                 }
             }
         }
@@ -24,7 +34,7 @@ pipeline  {
             steps {
                 echo 'Creating docker image ...'
                     dir('.'){
-                    sh "docker build -t macnaer/compass_frontend ."
+                    sh 'docker ps -q --filter "name=bartumeys/dashboard_frontend" | grep -q . && docker build -t bartumeys/dashboard_frontend . || echo Docker imager not created'
                 }
             }
         }
@@ -42,7 +52,7 @@ pipeline  {
             steps {
                 echo " ============== pushing image =================="
                 sh '''
-                docker push macnaer/compass_frontend:latest
+                docker push bartumeys/dashboard_frontend:latest
                 '''
             }
         }
@@ -51,9 +61,10 @@ pipeline  {
             steps {
                 echo " ============== starting frontend =================="
                 sh '''
-                docker run -d --restart=always --name compass_frontend -p 80:3000 macnaer/compass_frontend:latest
+                docker run -d --restart=always --name dashboard_frontend -p 80:3000 bartumeys/dashboard_frontend:latest
                 '''
             }
         }
     }
 }
+
