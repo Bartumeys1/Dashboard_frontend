@@ -16,8 +16,8 @@ pipeline  {
             steps {
                 echo 'Removing docers ...'
                  dir('.'){
-                    sh 'docker ps -q --filter "name=bartumeys/dashboard_frontend" | grep -q . && docker stop bartumeys/dashboard_frontend || echo Not stop'
-                    sh 'docker ps -q --filter "name=bartumeys/dashboard_frontend" | grep -q . && docker rm bartumeys/dashboard_frontend -f || echo Not remove docker'
+                    sh 'docker ps -q --filter "name=dashboard_frontend" | grep -q . && docker stop dashboard_frontend || echo Not stop'
+                    sh 'docker ps -q --filter "name=dashboard_frontend" | grep -q . && docker rm dashboard_frontend || echo Not remove docker'
 
                 }
             }
@@ -34,7 +34,7 @@ pipeline  {
             steps {
                 echo 'Creating docker image ...'
                     dir('.'){
-                    sh 'docker ps -q --filter "name=bartumeys/dashboard_frontend" | grep -q . && docker build -t bartumeys/dashboard_frontend . || echo Docker imager not created'
+                    sh "docker build -t bartumeys/dashboard_frontend ."
                 }
             }
         }
