@@ -16,8 +16,8 @@ pipeline  {
             steps {
                 echo 'Removing docers ...'
                  dir('.'){
-                    sh 'docker ps -q --filter "name=bartumeys/dashboard_frontend" | grep -q . && docker stop dashboard_frontend || echo Not stop'
-                    sh 'docker ps -q --filter "name=bartumeys/dashboard_frontend" | grep -q . && docker rm dashboard_frontend -f || echo Not remove docker'
+                    sh 'docker ps -q --filter "name=bartumeys/dashboard_frontend" | grep -q . && docker stop bartumeys/dashboard_frontend || echo Not stop'
+                    sh 'docker ps -q --filter "name=bartumeys/dashboard_frontend" | grep -q . && docker rm bartumeys/dashboard_frontend -f || echo Not remove docker'
 
                 }
             }
